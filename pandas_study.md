@@ -22,12 +22,12 @@ obj.index
 => RangeIndex(start=0, stop=4, step=1)
 
 obj2 = pd.Series([4, 7, -5, 3], index=['d', 'b', 'a', 'c'])
-obj
+obj2
 => 
-0    4
-1    7
-2   -5
-3    3
+d    4
+b    7
+a   -5
+c    3
 dtype: int64
 
 obj2[['c', 'a', 'd']]]
