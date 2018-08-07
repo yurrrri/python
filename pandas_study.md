@@ -339,7 +339,6 @@ year
 -  Index Objects
 ```
 obj = pd.Series(range(3), index=['a', 'b', 'c'])
-obj = Series(range(3), index=['a', 'b', 'c'])
 index = obj.index
 index
 =>
@@ -382,8 +381,9 @@ dtype: float64
 
 # fill_value 옵션: NaN 값이 있다면 그 값을 fill_value에서 지정한 값으로 채움
 
-obj3 = Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
+obj3 = pd.Series(['blue', 'purple', 'yellow'], index=[0, 2, 4])
 obj3.reindex(range(6), method='ffill')
+=>
 0 blue 
 1 blue 
 2 purple 
@@ -393,10 +393,11 @@ obj3.reindex(range(6), method='ffill')
 
 # method='ffill' 옵션 : NaN 값이 있으면 직전 값으로 채움 <-> method = 'bfill'
 ```
+
 - Dropping entries from an axis
 
 ```
-obj = Series(np.arange(5.), index=['a', 'b', 'c', 'd', 'e'])
+obj = pd.Series(np.arange(5), index=['a', 'b', 'c', 'd', 'e'])
 new_obj = obj.drop('c')
 new_obj
 =>
@@ -405,20 +406,24 @@ b 1
 d 3 
 e 4
 
-# dataframe.drop(x, axis=0) axis=0이면 지정한 행 데이터 전체를 제외한 
+# dataframe.drop(x, axis=) axis=0이면 지정한 행 데이터 전체를 제외한 
 dataframe을 반환하고, axis=1이면 지정한 열 데이터 전체를 제외한 dataframe 반환
 
-data = DataFrame(np.arange(16).reshape((4, 4)), ....: index=['Ohio', 'Colorado', 'Utah', 'New York'], ....: columns=['one', 'two', 'three', 'four'])
+data = pd.DataFrame(np.arange(16).reshape((4, 4)),
+....: index=['Ohio', 'Colorado', 'Utah', 'New York'], 
+....: columns=['one', 'two', 'three', 'four'])
+
 data.drop('two', axis=1)
 =>
 		one three four
 Ohio  		0     2    3
-Colorado 	4	  6	   7
-Utah		8	  10   11
+Colorado 	4     6	   7
+Utah		8     10   11
 New York	12    14   15
 ```
 
 - Arithmetic and data alignment : dataframe.add / sub / div / mul
+
 ```
 df1 = DataFrame(np.arange(9.).reshape((3, 3)), columns=list('bcd'), 
 index=['Ohio', 'Texas', 'Colorado'])
@@ -445,10 +450,11 @@ df1.add(df2, fill_value = 0)
 
 # 0으로 채운 다음 더하기 (fill_value = 0)
 ```
+
 - Function application and mapping : apply / applymap / map
 
 ```
-frame = DataFrame(np.random.randn(4, 3), columns=list('bde'), 
+frame = pd.DataFrame(np.random.randn(4, 3), columns=list('bde'), 
 index=['Utah', 'Ohio', 'Texas', 'Oregon'])
 
 f = lambda x: x.max() - x.min() # lambda 변수: 조건식
@@ -458,7 +464,7 @@ b 1.802165
 d 1.684034 
 e 2.689627
 
-# dataframe.apply(함수) : 함수를 적용할 columns가 여러개일 때 dataframe에 사용
+# dataframe.apply(함수) : 함수를 적용할 columns가 여러개일 때 dataframe에 사용 (열마다 함수 적용)
 
 format = lambda x: '%.2f' % x
 frame.applymap(format)
@@ -481,26 +487,29 @@ Name: e
 
 # series.map(함수) : 함수를 적용한 series를 반환함. 반드시 series에만 사용
 ```
+
 - Sorting and ranking : dataframe.sort_index() / dataframe.rank(axis=)
 ```
-frame = DataFrame({'b': [4, 7, -3, 2], 'a': [0, 1, 0, 1]})
+frame = pd.DataFrame({'b': [4, 7, -3, 2], 'a': [0, 1, 0, 1]})
 frame.sort_index(by='b')
 =>
-	a  b
-2   0  -3
+	a       b
+2       0      -3
 3	1	2
 0	0	4
 1	1	7
 frame.sort_index(by=['a', 'b'])
 =>
-	a b 
-2 	0 -3 
-0	0 4 
-3 	1 2 
-1 	1 7'
+	a  b 
+2 	0  -3 
+0	0  4 
+3 	1  2 
+1 	1  7
+
+# 'a'를 기준으로 먼저 정렬하고 난 후, 'b'를 기준으로 정렬
 
 frame.rank(axis=1)
-	a   b
+	a       b
 0`	2	3
 1	1	3
 2	2	1
@@ -511,9 +520,8 @@ frame.rank(axis=1)
 dataframe.mean() / sum() / cumsum()/ min() / max() / cumprod() / argmin() / argmax() / idxmax() : 지정한 축마다 최댓값이 포함된 데이터 반환/ idxmin() / describe() : 기본통계량 ...
 
 
-
 -  Handling Missing Data 
-dropna(axis=, how=) : missing data가 있는 자료값 자체를 삭제
+dropna(axis=, how=) : missing data가 있는 자료값 자체를 삭제. 기본값 : axis=0
 how='all' 일 경우 축을 기준으로 그 축에 해당되는 자료값이 모두 missing data 인것만 drop
 (thresh = n 옵션 : n개 이상의 missing data가 있는 자료만 삭제)
 isnull(), notnull(): 각 요소마다 missing data인지 아닌지를 bool값으로 반환
@@ -538,24 +546,36 @@ Qu1 Qu2 Qu3
 
 df = DataFrame(np.random.randn(7, 3))
 df.ix[:4,1] = np.NaN; df.ix[:2, 2]=np.NaN;
+df
+=>
+          0         1         2
+0 -1.197912       NaN       NaN
+1  0.476382       NaN       NaN
+2 -0.019053       NaN       NaN
+3 -0.480427       NaN -0.089518
+4 -0.148159       NaN  0.931992
+5  0.039886  0.627198  0.099928
+6 -0.961399  0.097585  1.104502
+
 df.dropna(thresh=3)
 =>
-		0  		1  		2 
-5 0.953654 -0.498597 0.9224056
-0.625449  0.427768  0.168391
+          0         1         2
+5  0.039886  0.627198  0.099928
+6 -0.961399  0.097585  1.104502
 
 df.fillna({1: 0.5, 2:-1})
 =>
-	0 	1 	2 
-0 -0.577087 0.500000 NaN 
-1 0.523772 0.500000 NaN 
-2 -0.713544 0.500000 NaN 
-3 -1.860761 0.500000 0.560145 
-4 -1.265934 0.500000 -1.063512 
-5 0.332883 -2.359419 -0.199543 
-6 -1.541996 -0.970736 -1.307030
+          0         1         2
+0 -1.197912  0.500000 -1.000000
+1  0.476382  0.500000 -1.000000
+2 -0.019053  0.500000 -1.000000
+3 -0.480427  0.500000 -0.089518
+4 -0.148159  0.500000  0.931992
+5  0.039886  0.627198  0.099928
+6 -0.961399  0.097585  1.104502
 ```
-- Hierarchical Indexing
+
+- Hierarchical Indexing (Multi Index)
 
 ```
 data = Series(np.random.randn(10), 
@@ -612,10 +632,10 @@ frame
 state	Ohio 	Colorado 
 color	Green Red Green 
 key1 key2
-a  	1 	0 	1    2 
-	2 	3 	4 	 5 
-b   1 	6 	7 	 8 
-    2 	9 	10 	 11
+a   1 	0 	1    2 
+    2 	3 	4    5 
+b   1 	6 	7    8 
+    2 	9 	10   11
 ```
 
 - Reordering and Sorting Levels 
@@ -680,15 +700,15 @@ frame
 frame2 = frame.set_index(['c', 'd'])
 frame2
 =>
-	  a b 
+	a b 
 c   d 
-one 0 0 7 
-	1 1 6 
-	2 2 5 
-two 0 3 4 
-	1 4 3 
-	2 5 2 
-	3 6 1
+one 0 	0 7 
+    1 	1 6 
+    2 	2 5 
+two 0 	3 4 
+    1 	4 3 
+    2 	5 2 
+    3 	6 1
 
 frame.set_index(['c', 'd'], drop=False)
 =>
@@ -703,7 +723,7 @@ two 0 3 4 two 0
 	3 6 1 two 3
 frame2.reset_index()
 =>
-	c d a b 
+  c d a b 
 0 one 0 0 7 
 1 one 1 1 6 
 2 one 2 2 5 
