@@ -93,7 +93,7 @@ arr[5:8]=10
 
 arr 
 => [ 0  1  2  3  4 10 10 10  8  9]
-arr_slice = arr[0:2]
+arr_slice = arr[5:8]
 arr_slice
 => [10 10 10]
 arr_slice[0:2]=64
@@ -101,6 +101,7 @@ arr
 => [ 0  1  2  3  4 64 64 10  8  9]
 ```
 
+# 원래의 자료를 변경하고 싶지 않으면, copy() 메소드를 사용하여 값만 복사한 또다른 array를 만든다.
 ```
 arr3d = np.array([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
 old_values = arr3d[0].copy() 
@@ -239,7 +240,6 @@ arr
 arr[[1,5,7,2],[0,3,1,2]]
 => [ 4 23 29 10]
 
-
 # array의 [1,0], [5,3], [7,1], [2,2] 인덱스의 원소를 뽑아 array로 만들어줌
 
 arr[[1, 5, 7, 2]][:, [0, 3, 1, 2]]
@@ -329,7 +329,7 @@ np.modf(arr)
 
 **Conditional Logic as Array Operations**
 
-- zip 함수 : 여러가지 list를 한꺼번에 slicing 할때 사용함
+- zip 함수 : 여러가지 list를 한꺼번에 받아서 처리할 때
 ```
 xarr = np.array([1.1, 1.2, 1.3, 1.4, 1.5])
 yarr = np.array([2.1, 2.2, 2.3, 2.4, 2.5])
@@ -344,7 +344,6 @@ result
 
 # 저 코드와 같은 기능을 하는 메쏘드 => np.where(조건문, true일 때 지정할 값, false일 때 지정할 값)
 
-
 arr = np.random.randn(4, 4)
 arr
 => [[ 0.09719634 -0.00915221  0.14236223  2.07891208]
@@ -357,8 +356,6 @@ np.where(arr >0, 2, -2)
  [ 2 -2  2  2]
  [ 2  2 -2  2]]
 
-
-# np.where 메쏘드는 조건문에 true에 해당하는지, false에 해당하는지를 모든 원소에 대해 판단하여 값을 return 한다.
 ```
 
 **Mathematical and Statistical Methods**
@@ -390,7 +387,7 @@ bools.all()
 **Unique and Other Set Logic**
  
  - np.unique(x) : x의 유일값 반환
- - np. in1d(x, y) : x에 y가 포함되어 있는가를 원소끼리 비교하여 boolean값 반환
+ - np.in1d(x, y) : x에 y가 포함되어 있는가를 원소끼리 비교하여 boolean값 반환
 ```
 names = np.array(['Bob', 'Joe', 'Will', 'Bob', 'Will', 'Joe', 'Joe'])
 np.unique(names)
