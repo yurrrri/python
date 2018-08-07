@@ -237,12 +237,13 @@ five 2002 Nevada 2.9 NaN
 
 # 인덱스 지정: index=[] 옵션
 ```
-- DataFrame 접근:
+- DataFrame 접근
+
 열: dataframe[열] / dataframe.열
-행 : dataframe.ix[인덱스] (이때 인덱스는 끝의 인덱스 포함함), 인덱스 라벨 둘다 가능
- dataframe[인덱스] ( 이때 인덱스는 끝의 인덱스 포함 X)
-dataframe.iloc[인덱스] (끝의 인덱스 포함 X) , 라벨로 찾을 수 없음
-dataframe.loc[라벨], 인덱스로 찾을 수 없음
+행: dataframe.ix[인덱스] (이때 인덱스는 끝의 인덱스 포함함), 인덱스 라벨 둘다 가능
+    dataframe[인덱스] ( 이때 인덱스는 끝의 인덱스 포함 X)
+    dataframe.iloc[인덱스] (끝의 인덱스 포함 X) , 라벨로 찾을 수 없음
+    dataframe.loc[라벨], 인덱스로 찾을 수 없음
 행, 열 : dataframe.ix[인덱스, 열]
   
 ```
@@ -319,10 +320,10 @@ year
  data = pd.DataFrame({'Qu1': [1, 3, 4, 3, 4],
  .....: 'Qu2': [2, 3, 1, 2, 3],
  .....: 'Qu3': [1, 5, 2, 4, 4]})
- result = data.apply(pd.value_counts).fillna(0) 
- # dataframe 자체에 자룟값의 빈도수를 반환하는 함수가 없으므로, pandas에서
- 함수를 가져와 적용하는 방법
- ( AttributeError: 'DataFrame' object has no attribute 'value_counts' )
+ result = data.apply(pd.value_counts).fillna(0)
+ 
+ # data에 pd.value_counts 함수를 적용하고, NA값은 0으로 채워서 데이터프레임으로 반환
+
  result
    Qu1 Qu2 Qu3 
  1 1 1 1 
