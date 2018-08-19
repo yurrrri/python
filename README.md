@@ -1,4 +1,4 @@
-# 1. Python 라이브러리를 활용한 데이터 분석
+# Python 라이브러리를 활용한 데이터 분석 - 웨스 맥키니, 한빛미디어 (oreilly media)
 
 - ## [Numpy](https://github.com/yurrrri/python_for_data_analysis/blob/master/dataloading_and_file_formats.ipynb)
 - ## [Pandas](https://github.com/yurrrri/python_for_data_analysis/blob/master/pandas_study.ipynb)
